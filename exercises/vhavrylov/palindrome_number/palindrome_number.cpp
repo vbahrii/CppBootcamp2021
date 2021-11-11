@@ -5,6 +5,7 @@
 //  clang-fomat palindrome_number.cpp -i
 
 #include <iostream>
+#include <math.h>
 
 using std::cout;
 using std::endl;
@@ -19,8 +20,39 @@ static bool answers[] = {true,  false, true,  true,  false, false,
                          false, false, false, false, true};
 
 bool is_palindrome_number(int number) {
-  if (number < -0) {
+  if (number < 0) {
     return false;
+  }
+
+  if (number == 0) {
+    return true;
+  }
+
+  const int total_digits = ceil(log10(number));
+
+  if (total_digits == 1) {
+    return true;
+  }
+
+  static const int TEN = 10;
+  int major_digit_idx = total_digits;
+  int minor_digit_idx = 1;
+
+  while (major_digit_idx > minor_digit_idx) {
+    const int major_digit_rank = int(pow(TEN, major_digit_idx));
+    const int minor_digit_rank = int(pow(TEN, minor_digit_idx));
+
+    const int major_digit_value =
+        number % major_digit_rank / (major_digit_rank / TEN);
+    const int minor_digit_value =
+        number % minor_digit_rank / (minor_digit_rank / TEN);
+
+    if (major_digit_value != minor_digit_value) {
+      return false;
+    }
+
+    ++minor_digit_idx;
+    --major_digit_idx;
   }
 
   return true;
