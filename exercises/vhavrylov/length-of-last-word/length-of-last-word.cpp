@@ -18,6 +18,18 @@ using std::size_t;
 
 static const size_t MAX_ALLOWED_STRING_LENGTH{10000};
 static const char DELIMITER{' '};
+static const auto OK{"[   OK   ]"};
+static const auto NOK{"[ FAILED ]"};
+
+struct TestCase {
+  const char *string;
+  int answer;
+};
+
+static const TestCase test_cases[] = {
+    {{""}, {0}},      {{"aaa"}, {3}},   {{"a aaa"}, {3}}, {{"aaa a"}, {1}},
+    {{"aaa  "}, {3}}, {{"     "}, {0}}, {{"    a"}, {1}}, {{" a a "}, {1}},
+};
 
 bool is_allowed_char(char ch) {
   return (('A' <= ch) && (ch <= 'z')) || (ch == DELIMITER);
@@ -45,7 +57,9 @@ int lengthOfLastWord(const char *s) {
 }
 
 int main() {
-
-  auto str = "aa aa aaa     ";
-  cout << str << " " << lengthOfLastWord(str) << endl;
+  for (const auto &test : test_cases) {
+    const int answer = lengthOfLastWord(test.string);
+    cout << (test.answer == answer ? OK : NOK) << " " << answer << " '"
+         << test.string << "'" << endl;
+  }
 }
