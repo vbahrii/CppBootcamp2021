@@ -32,6 +32,8 @@ static const TestCase test_cases[] = {
 };
 
 bool is_allowed_char(char ch) {
+  // Here we rely on the ASCII table, where the capital english
+  // letter A has the smallest value, and 'A' < 'Z' < 'a' < 'z'
   return (('A' <= ch) && (ch <= 'z')) || (ch == DELIMITER);
 }
 
